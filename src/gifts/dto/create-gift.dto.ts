@@ -8,10 +8,6 @@ export class CreateGiftDto {
   @IsString()
   description?: string;
 
-  @IsOptional()
-  @IsString()
-  image?: string;
-
   @IsInt()
   @Min(0)
   points: number;

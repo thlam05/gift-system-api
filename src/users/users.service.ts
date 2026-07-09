@@ -44,7 +44,6 @@ export class UsersService {
         'email',
         'fullName',
         'phone',
-        'avatar',
         'role',
         'createdAt',
       ],

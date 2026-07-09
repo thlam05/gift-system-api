@@ -8,8 +8,4 @@ export class UpdateProfileDto {
   @IsOptional()
   @IsString()
   phone?: string;
-
-  @IsOptional()
-  @IsString()
-  avatar?: string;
 }

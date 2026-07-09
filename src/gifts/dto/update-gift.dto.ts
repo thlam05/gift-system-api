@@ -10,10 +10,6 @@ export class UpdateGiftDto {
   description?: string;
 
   @IsOptional()
-  @IsString()
-  image?: string;
-
-  @IsOptional()
   @IsInt()
   @Min(0)
   points?: number;
