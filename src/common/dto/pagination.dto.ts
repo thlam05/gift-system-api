@@ -15,3 +15,13 @@ export class PaginationDto {
   @Max(100)
   limit?: number = 10;
 }
+
+export interface PaginatedResult<T> {
+  data: T[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}

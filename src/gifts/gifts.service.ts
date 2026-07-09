@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Gift } from './entities/gift.entity';
 import { CreateGiftDto } from './dto/create-gift.dto';
 import { UpdateGiftDto } from './dto/update-gift.dto';
+import { PaginationDto, PaginatedResult } from '../common/dto/pagination.dto';
 
 @Injectable()
 export class GiftsService {
@@ -12,11 +13,20 @@ export class GiftsService {
     private giftRepository: Repository<Gift>,
   ) {}
 
-  async findAllActive() {
-    return this.giftRepository.find({
+  async findAllActive(paginationDto: PaginationDto): Promise<PaginatedResult<Gift>> {
+    const page = paginationDto.page ?? 1;
+    const limit = paginationDto.limit ?? 10;
+    const [data, total] = await this.giftRepository.findAndCount({
       where: { isActive: true },
       order: { createdAt: 'DESC' },
+      skip: (page - 1) * limit,
+      take: limit,
     });
+
+    return {
+      data,
+      meta: { page, limit, total, totalPages: Math.ceil(total / limit) },
+    };
   }
 
   async findOneActive(id: string) {
@@ -34,10 +44,19 @@ export class GiftsService {
     return this.giftRepository.save(gift);
   }
 
-  async findAll() {
-    return this.giftRepository.find({
+  async findAll(paginationDto: PaginationDto): Promise<PaginatedResult<Gift>> {
+    const page = paginationDto.page ?? 1;
+    const limit = paginationDto.limit ?? 10;
+    const [data, total] = await this.giftRepository.findAndCount({
       order: { createdAt: 'DESC' },
+      skip: (page - 1) * limit,
+      take: limit,
     });
+
+    return {
+      data,
+      meta: { page, limit, total, totalPages: Math.ceil(total / limit) },
+    };
   }
 
   async findOne(id: string) {

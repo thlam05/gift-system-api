@@ -6,6 +6,7 @@ import {
   Delete,
   Body,
   Param,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -14,6 +15,7 @@ import { CreateGiftDto } from './dto/create-gift.dto';
 import { UpdateGiftDto } from './dto/update-gift.dto';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
+import { PaginationDto } from '../common/dto/pagination.dto';
 
 @Controller()
 export class GiftsController {
@@ -21,8 +23,8 @@ export class GiftsController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('gifts')
-  findAllActive() {
-    return this.giftsService.findAllActive();
+  findAllActive(@Query() paginationDto: PaginationDto) {
+    return this.giftsService.findAllActive(paginationDto);
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -41,8 +43,8 @@ export class GiftsController {
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('admin')
   @Get('admin/gifts')
-  findAll() {
-    return this.giftsService.findAll();
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.giftsService.findAll(paginationDto);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
