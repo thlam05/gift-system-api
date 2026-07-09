@@ -17,51 +17,51 @@ import { Roles } from '../common/decorators/roles.decorator';
 
 @Controller()
 export class GiftsController {
-  constructor(private readonly giftsService: GiftsService) {}
+  constructor(private readonly giftsService: GiftsService) { }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('api/gifts')
+  @Get('gifts')
   findAllActive() {
     return this.giftsService.findAllActive();
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('api/gifts/:id')
+  @Get('gifts/:id')
   findOneActive(@Param('id') id: string) {
     return this.giftsService.findOneActive(id);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('admin')
-  @Post('api/admin/gifts')
+  @Post('admin/gifts')
   create(@Body() dto: CreateGiftDto) {
     return this.giftsService.create(dto);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('admin')
-  @Get('api/admin/gifts')
+  @Get('admin/gifts')
   findAll() {
     return this.giftsService.findAll();
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('admin')
-  @Get('api/admin/gifts/:id')
+  @Get('admin/gifts/:id')
   findOne(@Param('id') id: string) {
     return this.giftsService.findOne(id);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('admin')
-  @Patch('api/admin/gifts/:id')
+  @Patch('admin/gifts/:id')
   update(@Param('id') id: string, @Body() dto: UpdateGiftDto) {
     return this.giftsService.update(id, dto);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('admin')
-  @Delete('api/admin/gifts/:id')
+  @Delete('admin/gifts/:id')
   remove(@Param('id') id: string) {
     return this.giftsService.remove(id);
   }
