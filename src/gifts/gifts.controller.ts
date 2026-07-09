@@ -5,9 +5,11 @@ import {
   Patch,
   Delete,
   Body,
+  HttpCode,
   Param,
   Query,
   UseGuards,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GiftsService } from './gifts.service';
@@ -29,7 +31,7 @@ export class GiftsController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('gifts/:id')
-  findOneActive(@Param('id') id: string) {
+  findOneActive(@Param('id', ParseUUIDPipe) id: string) {
     return this.giftsService.findOneActive(id);
   }
 
@@ -50,21 +52,22 @@ export class GiftsController {
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('admin')
   @Get('admin/gifts/:id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.giftsService.findOne(id);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('admin')
   @Patch('admin/gifts/:id')
-  update(@Param('id') id: string, @Body() dto: UpdateGiftDto) {
+  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateGiftDto) {
     return this.giftsService.update(id, dto);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('admin')
+  @HttpCode(204)
   @Delete('admin/gifts/:id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.giftsService.remove(id);
   }
 }
