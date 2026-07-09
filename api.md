@@ -16,9 +16,21 @@ Tổng hợp endpoints
 | PATCH | `/admin/gifts/:id` | JWT | admin | — | Cập nhật quà |
 | DELETE | `/admin/gifts/:id` | JWT | admin | — | Xoá quà |
 
-**Pagination:** Các endpoint list hỗ trợ query params `page` (mặc định 1) và `limit` (mặc định 10, tối đa 100).
+## Response Format
 
-Response có dạng:
+Tất cả response đều được wrap thống nhất:
+
+### Thành công
+
+```json
+{
+  "data": ...,
+  "message": "Success"
+}
+```
+
+### Có phân trang
+
 ```json
 {
   "data": [...],
@@ -27,6 +39,36 @@ Response có dạng:
     "limit": 10,
     "total": 50,
     "totalPages": 5
-  }
+  },
+  "message": "Success"
+}
+```
+
+### Xoá thành công
+
+```json
+{
+  "data": null,
+  "message": "Success"
+}
+```
+
+### Lỗi
+
+```json
+{
+  "data": null,
+  "message": "Gift not found",
+  "statusCode": 404
+}
+```
+
+### Validation lỗi
+
+```json
+{
+  "data": null,
+  "message": ["email must be an email", "password must be longer than 6"],
+  "statusCode": 400
 }
 ```

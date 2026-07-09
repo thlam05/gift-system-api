@@ -78,6 +78,6 @@ export class GiftsService {
   async remove(id: string) {
     const gift = await this.findOne(id);
     await this.giftRepository.remove(gift);
-    return { message: 'Gift deleted successfully' };
+    return null;
   }
 }
