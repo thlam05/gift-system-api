@@ -2,6 +2,8 @@ import {
   Injectable,
   UnauthorizedException,
   ConflictException,
+  BadRequestException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -17,7 +19,7 @@ export class AuthService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async register(dto: RegisterDto) {
     const existing = await this.userRepository.findOne({
@@ -44,12 +46,12 @@ export class AuthService {
       where: { email: dto.email },
     });
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new BadRequestException('Invalid credentials');
     }
 
     const isPasswordValid = await bcrypt.compare(dto.password, user.password);
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new BadRequestException('Invalid credentials');
     }
 
     return this.generateToken(user);
@@ -59,13 +61,17 @@ export class AuthService {
     const user = await this.userRepository.findOne({
       where: { email: dto.email },
     });
-    if (!user || user.role !== UserRole.ADMIN) {
-      throw new UnauthorizedException('Invalid admin credentials');
+    if (!user) {
+      throw new BadRequestException('Invalid admin credentials');
     }
 
     const isPasswordValid = await bcrypt.compare(dto.password, user.password);
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid admin credentials');
+      throw new BadRequestException('Invalid admin credentials');
+    }
+
+    if (user.role !== UserRole.ADMIN) {
+      throw new ForbiddenException("Access denied. Admin only.")
     }
 
     return this.generateToken(user);
