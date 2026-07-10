@@ -1,10 +1,14 @@
+import { Logger } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { dataSourceOptions } from '../../config/database.config';
 import * as bcrypt from 'bcrypt';
 
+const logger = new Logger('Seed');
+
 async function seed() {
   const dataSource = new DataSource(dataSourceOptions);
   await dataSource.initialize();
+  logger.log('Database connected');
 
   const queryRunner = dataSource.createQueryRunner();
 
@@ -17,6 +21,8 @@ async function seed() {
     [hashedPassword],
   );
 
+  logger.log('Admin user created');
+
   await queryRunner.query(
     `INSERT INTO "gifts" ("name", "description", "points", "quantity")
      VALUES
@@ -28,10 +34,12 @@ async function seed() {
      ON CONFLICT DO NOTHING`,
   );
 
+  logger.log('Sample gifts created');
+
   await queryRunner.release();
   await dataSource.destroy();
 
-  console.log('Seed completed!');
+  logger.log('Seed completed!');
 }
 
-seed().catch(console.error);
+seed().catch(err => { logger.error(err); process.exit(1); });
