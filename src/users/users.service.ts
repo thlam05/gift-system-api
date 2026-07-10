@@ -17,7 +17,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-  ) { }
+  ) {}
 
   async getProfile(userId: string): Promise<UserResponseDto> {
     const user = await this.userRepository.findOne({
@@ -29,7 +29,10 @@ export class UsersService {
     return this.toResponseDto(user);
   }
 
-  async updateProfile(userId: string, dto: UpdateProfileRequestDto): Promise<UserResponseDto> {
+  async updateProfile(
+    userId: string,
+    dto: UpdateProfileRequestDto,
+  ): Promise<UserResponseDto> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
     });
@@ -41,7 +44,10 @@ export class UsersService {
     return this.toResponseDto(user);
   }
 
-  async changePassword(userId: string, dto: ChangePasswordRequestDto): Promise<UserResponseDto> {
+  async changePassword(
+    userId: string,
+    dto: ChangePasswordRequestDto,
+  ): Promise<UserResponseDto> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
     });
@@ -70,7 +76,9 @@ export class UsersService {
     return this.toResponseDto(user);
   }
 
-  async findAll(paginationDto: PaginationDto): Promise<PaginatedResult<UserResponseDto>> {
+  async findAll(
+    paginationDto: PaginationDto,
+  ): Promise<PaginatedResult<UserResponseDto>> {
     const page = paginationDto.page ?? 1;
     const limit = paginationDto.limit ?? 10;
     const [data, total] = await this.userRepository.findAndCount({
@@ -88,7 +96,7 @@ export class UsersService {
     });
 
     return {
-      data: data.map(user => this.toResponseDto(user)),
+      data: data.map((user) => this.toResponseDto(user)),
       meta: { page, limit, total, totalPages: Math.ceil(total / limit) },
     };
   }

@@ -21,7 +21,9 @@ import { GiftsModule } from './gifts/gifts.module';
         DB_PASSWORD: Joi.string().required(),
         DB_DATABASE: Joi.string().default('gift_system'),
         JWT_SECRET: Joi.string().required(),
-        JWT_EXPIRES_IN: Joi.string().pattern(/^\d+(s|m|h|d|w|y)?$/i).required(),
+        JWT_EXPIRES_IN: Joi.string()
+          .pattern(/^\d+(s|m|h|d|w|y)?$/i)
+          .required(),
       }),
     }),
     TypeOrmModule.forRoot(dataSourceOptions),
@@ -30,5 +32,4 @@ import { GiftsModule } from './gifts/gifts.module';
     GiftsModule,
   ],
 })
-
-export class AppModule { }
+export class AppModule {}

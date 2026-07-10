@@ -10,4 +10,4 @@ import { CommonModule } from '../common/common.module';
   controllers: [GiftsController],
   providers: [GiftsService],
 })
-export class GiftsModule { }
+export class GiftsModule {}

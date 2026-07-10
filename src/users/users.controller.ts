@@ -1,7 +1,15 @@
 import { Controller, Get, Patch, Body, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags, ApiBearerAuth, ApiOperation, ApiBadRequestResponse } from '@nestjs/swagger';
-import { ApiDataResponse, ApiPaginatedDataResponse } from '../common/decorators/api-data-response.decorator';
+import {
+  ApiTags,
+  ApiBearerAuth,
+  ApiOperation,
+  ApiBadRequestResponse,
+} from '@nestjs/swagger';
+import {
+  ApiDataResponse,
+  ApiPaginatedDataResponse,
+} from '../common/decorators/api-data-response.decorator';
 import { UsersService } from './users.service';
 import { UpdateProfileRequestDto } from './dto/request/update-profile-request.dto';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
@@ -17,7 +25,7 @@ import { ApiTagsEnum } from '../common/constants/api-tags.constant';
 @ApiBearerAuth()
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Get('profile')

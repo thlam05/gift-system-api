@@ -13,8 +13,13 @@ import { SuccessResponse, PaginatedResponse } from '../dto/api-response.dto';
 export class ResponseInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
-      map(data => {
-        if (data && typeof data === 'object' && 'data' in data && 'meta' in data) {
+      map((data) => {
+        if (
+          data &&
+          typeof data === 'object' &&
+          'data' in data &&
+          'meta' in data
+        ) {
           const res: PaginatedResponse<any> = {
             data: data.data,
             meta: data.meta,

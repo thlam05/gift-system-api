@@ -12,8 +12,20 @@ import {
   ParseUUIDPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags, ApiBearerAuth, ApiOperation, ApiNoContentResponse, ApiNotFoundResponse, ApiParam, ApiBadRequestResponse, ApiUnauthorizedResponse } from '@nestjs/swagger';
-import { ApiDataResponse, ApiCreatedDataResponse, ApiPaginatedDataResponse } from '../common/decorators/api-data-response.decorator';
+import {
+  ApiTags,
+  ApiBearerAuth,
+  ApiOperation,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
+  ApiParam,
+  ApiBadRequestResponse,
+} from '@nestjs/swagger';
+import {
+  ApiDataResponse,
+  ApiCreatedDataResponse,
+  ApiPaginatedDataResponse,
+} from '../common/decorators/api-data-response.decorator';
 import { GiftsService } from './gifts.service';
 import { CreateGiftRequestDto } from './dto/request/create-gift-request.dto';
 import { UpdateGiftRequestDto } from './dto/request/update-gift-request.dto';
@@ -28,7 +40,7 @@ import { ApiTagsEnum } from '../common/constants/api-tags.constant';
 @ApiBearerAuth()
 @Controller()
 export class GiftsController {
-  constructor(private readonly giftsService: GiftsService) { }
+  constructor(private readonly giftsService: GiftsService) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Get('gifts')
@@ -86,7 +98,10 @@ export class GiftsController {
   @ApiDataResponse(GiftResponseDto)
   @ApiBadRequestResponse({ description: 'Invalid input data' })
   @ApiNotFoundResponse({ description: 'Gift not found' })
-  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateGiftRequestDto) {
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: UpdateGiftRequestDto,
+  ) {
     return this.giftsService.update(id, dto);
   }
 

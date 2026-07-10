@@ -1,5 +1,10 @@
 import { Type, applyDecorators } from '@nestjs/common';
-import { ApiExtraModels, ApiOkResponse, ApiCreatedResponse, getSchemaPath } from '@nestjs/swagger';
+import {
+  ApiExtraModels,
+  ApiOkResponse,
+  ApiCreatedResponse,
+  getSchemaPath,
+} from '@nestjs/swagger';
 
 export const ApiDataResponse = <TModel extends Type<any>>(model: TModel) => {
   return applyDecorators(
@@ -16,7 +21,9 @@ export const ApiDataResponse = <TModel extends Type<any>>(model: TModel) => {
   );
 };
 
-export const ApiCreatedDataResponse = <TModel extends Type<any>>(model: TModel) => {
+export const ApiCreatedDataResponse = <TModel extends Type<any>>(
+  model: TModel,
+) => {
   return applyDecorators(
     ApiExtraModels(model),
     ApiCreatedResponse({
@@ -31,7 +38,9 @@ export const ApiCreatedDataResponse = <TModel extends Type<any>>(model: TModel) 
   );
 };
 
-export const ApiPaginatedDataResponse = <TModel extends Type<any>>(model: TModel) => {
+export const ApiPaginatedDataResponse = <TModel extends Type<any>>(
+  model: TModel,
+) => {
   return applyDecorators(
     ApiExtraModels(model),
     ApiOkResponse({

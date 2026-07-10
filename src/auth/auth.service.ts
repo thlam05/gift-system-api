@@ -1,6 +1,5 @@
 import {
   Injectable,
-  UnauthorizedException,
   ConflictException,
   BadRequestException,
   ForbiddenException,
@@ -21,7 +20,7 @@ export class AuthService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private jwtService: JwtService,
-  ) { }
+  ) {}
 
   async register(dto: RegisterRequestDto): Promise<AuthResponseDto> {
     const existing = await this.userRepository.findOne({
@@ -73,7 +72,7 @@ export class AuthService {
     }
 
     if (user.role !== UserRole.ADMIN) {
-      throw new ForbiddenException(AUTH_MESSAGES.ADMIN_ONLY)
+      throw new ForbiddenException(AUTH_MESSAGES.ADMIN_ONLY);
     }
 
     return this.generateToken(user);
