@@ -11,6 +11,7 @@ import { UpdateProfileRequestDto } from './dto/request/update-profile-request.dt
 import { PaginationDto, PaginatedResult } from '../common/dto/pagination.dto';
 import { ChangePasswordRequestDto } from './dto/request/change-password-request.dto';
 import { UserResponseDto } from './dto/response/user-response.dto';
+import { USER_MESSAGES } from '../common/constants/messages.constant';
 
 @Injectable()
 export class UsersService {
@@ -24,7 +25,7 @@ export class UsersService {
       where: { id: userId },
     });
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException(USER_MESSAGES.USER_NOT_FOUND);
     }
     return this.toResponseDto(user);
   }
@@ -37,7 +38,7 @@ export class UsersService {
       where: { id: userId },
     });
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException(USER_MESSAGES.USER_NOT_FOUND);
     }
     Object.assign(user, dto);
     await this.userRepository.save(user);
@@ -53,7 +54,7 @@ export class UsersService {
     });
 
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException(USER_MESSAGES.USER_NOT_FOUND);
     }
 
     const isOldPasswordValid = await bcrypt.compare(
@@ -62,12 +63,12 @@ export class UsersService {
     );
 
     if (!isOldPasswordValid) {
-      throw new BadRequestException('Old password is incorrect');
+      throw new BadRequestException(USER_MESSAGES.OLD_PASSWORD_INCORRECT);
     }
 
     if (dto.oldPassword === dto.newPassword) {
       throw new BadRequestException(
-        'New password must be different from old password',
+        USER_MESSAGES.NEW_PASSWORD_MUST_BE_DIFFERENT,
       );
     }
 

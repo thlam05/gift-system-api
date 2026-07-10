@@ -6,6 +6,7 @@ import { CreateGiftRequestDto } from './dto/request/create-gift-request.dto';
 import { UpdateGiftRequestDto } from './dto/request/update-gift-request.dto';
 import { PaginationDto, PaginatedResult } from '../common/dto/pagination.dto';
 import { GiftResponseDto } from './dto/response/gift-response.dto';
+import { GIFT_MESSAGES } from 'src/common/constants/messages.constant';
 
 @Injectable()
 export class GiftsService {
@@ -37,7 +38,7 @@ export class GiftsService {
       where: { id, isActive: true },
     });
     if (!gift) {
-      throw new NotFoundException('Gift not found');
+      throw new NotFoundException(GIFT_MESSAGES.GIFT_NOT_FOUND);
     }
     return this.toResponseDto(gift);
   }
@@ -70,7 +71,7 @@ export class GiftsService {
       where: { id },
     });
     if (!gift) {
-      throw new NotFoundException('Gift not found');
+      throw new NotFoundException(GIFT_MESSAGES.GIFT_NOT_FOUND);
     }
     return this.toResponseDto(gift);
   }
@@ -95,7 +96,7 @@ export class GiftsService {
       where: { id },
     });
     if (!gift) {
-      throw new NotFoundException('Gift not found');
+      throw new NotFoundException(GIFT_MESSAGES.GIFT_NOT_FOUND);
     }
 
     return gift;

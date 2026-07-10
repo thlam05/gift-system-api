@@ -8,3 +8,14 @@ export const AUTH_MESSAGES = {
   INVALID_ADMIN_CREDENTIALS: 'Invalid admin credentials',
   ADMIN_ONLY: 'Access denied. Admin only.',
 } as const;
+
+export const USER_MESSAGES = {
+  USER_NOT_FOUND: 'User not found',
+  OLD_PASSWORD_INCORRECT: 'Old password is incorrect',
+  NEW_PASSWORD_MUST_BE_DIFFERENT:
+    'New password must be different from old password',
+} as const;
+
+export const GIFT_MESSAGES = {
+  GIFT_NOT_FOUND: 'Gift not found',
+} as const;

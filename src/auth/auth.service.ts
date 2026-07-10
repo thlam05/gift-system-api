@@ -2,7 +2,6 @@ import {
   Injectable,
   ConflictException,
   BadRequestException,
-  ForbiddenException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -72,7 +71,7 @@ export class AuthService {
     }
 
     if (user.role !== UserRole.ADMIN) {
-      throw new ForbiddenException(AUTH_MESSAGES.ADMIN_ONLY);
+      throw new BadRequestException(AUTH_MESSAGES.INVALID_ADMIN_CREDENTIALS);
     }
 
     return this.generateToken(user);
