@@ -7,11 +7,13 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { RESPONSE_MESSAGES } from '../constants/messages.constant';
-import { SuccessResponse, PaginatedResponse } from '../dto/api-response.dto';
 
 @Injectable()
-export class ResponseInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+export class ResponseInterceptor implements NestInterceptor<unknown, unknown> {
+  intercept(
+    context: ExecutionContext,
+    next: CallHandler<unknown>,
+  ): Observable<unknown> {
     return next.handle().pipe(
       map((data) => {
         if (
@@ -20,19 +22,17 @@ export class ResponseInterceptor implements NestInterceptor {
           'data' in data &&
           'meta' in data
         ) {
-          const res: PaginatedResponse<any> = {
-            data: data.data,
-            meta: data.meta,
+          return {
+            data: (data as { data: unknown }).data,
+            meta: (data as { meta: unknown }).meta,
             message: RESPONSE_MESSAGES.SUCCESS,
           };
-          return res;
         }
 
-        const res: SuccessResponse<any> = {
+        return {
           data: data ?? null,
           message: RESPONSE_MESSAGES.SUCCESS,
         };
-        return res;
       }),
     );
   }

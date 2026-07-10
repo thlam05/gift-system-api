@@ -6,6 +6,7 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const ApiDataResponse = <TModel extends Type<any>>(model: TModel) => {
   return applyDecorators(
     ApiExtraModels(model),
@@ -21,6 +22,7 @@ export const ApiDataResponse = <TModel extends Type<any>>(model: TModel) => {
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const ApiCreatedDataResponse = <TModel extends Type<any>>(
   model: TModel,
 ) => {
@@ -38,6 +40,7 @@ export const ApiCreatedDataResponse = <TModel extends Type<any>>(
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const ApiPaginatedDataResponse = <TModel extends Type<any>>(
   model: TModel,
 ) => {

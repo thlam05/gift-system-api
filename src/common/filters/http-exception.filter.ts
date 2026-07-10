@@ -18,8 +18,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const message =
       typeof exceptionResponse === 'string'
         ? exceptionResponse
-        : (exceptionResponse as Record<string, any>).message ||
-          exception.message;
+        : ((exceptionResponse as { message?: string }).message ??
+          exception.message);
 
     const body: ErrorResponse = {
       data: null,
