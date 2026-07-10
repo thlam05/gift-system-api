@@ -3,10 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { GiftsController } from './gifts.controller';
 import { GiftsService } from './gifts.service';
 import { Gift } from './entities/gift.entity';
+import { CommonModule } from '../common/common.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Gift])],
+  imports: [CommonModule, TypeOrmModule.forFeature([Gift])],
   controllers: [GiftsController],
   providers: [GiftsService],
 })
-export class GiftsModule {}
+export class GiftsModule { }

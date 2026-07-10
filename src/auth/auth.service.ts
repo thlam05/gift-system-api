@@ -10,8 +10,9 @@ import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { User, UserRole } from './entities/user.entity';
-import { RegisterDto } from './dto/register.dto';
-import { LoginDto } from './dto/login.dto';
+import { RegisterRequestDto } from './dto/request/register-request.dto';
+import { LoginRequestDto } from './dto/request/login-request.dto';
+import { AuthResponseDto } from './dto/response/auth-response.dto';
 import { AUTH_MESSAGES } from '../common/constants/messages.constant';
 
 @Injectable()
@@ -22,7 +23,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) { }
 
-  async register(dto: RegisterDto) {
+  async register(dto: RegisterRequestDto): Promise<AuthResponseDto> {
     const existing = await this.userRepository.findOne({
       where: { email: dto.email },
     });
@@ -42,7 +43,7 @@ export class AuthService {
     return this.generateToken(user);
   }
 
-  async login(dto: LoginDto) {
+  async login(dto: LoginRequestDto): Promise<AuthResponseDto> {
     const user = await this.userRepository.findOne({
       where: { email: dto.email },
     });
@@ -58,7 +59,7 @@ export class AuthService {
     return this.generateToken(user);
   }
 
-  async adminLogin(dto: LoginDto) {
+  async adminLogin(dto: LoginRequestDto): Promise<AuthResponseDto> {
     const user = await this.userRepository.findOne({
       where: { email: dto.email },
     });
@@ -78,7 +79,7 @@ export class AuthService {
     return this.generateToken(user);
   }
 
-  private generateToken(user: User) {
+  private generateToken(user: User): AuthResponseDto {
     const payload = { sub: user.id, role: user.role };
     return {
       accessToken: this.jwtService.sign(payload),

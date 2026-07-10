@@ -7,9 +7,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { User } from '../auth/entities/user.entity';
-import { UpdateProfileDto } from './dto/update-profile.dto';
+import { UpdateProfileRequestDto } from './dto/request/update-profile-request.dto';
 import { PaginationDto, PaginatedResult } from '../common/dto/pagination.dto';
-import { ChangePasswordDto } from './dto/change-password.dto';
+import { ChangePasswordRequestDto } from './dto/request/change-password-request.dto';
+import { UserResponseDto } from './dto/response/user-response.dto';
 
 @Injectable()
 export class UsersService {
@@ -30,7 +31,7 @@ export class UsersService {
     return result;
   }
 
-  async updateProfile(userId: string, dto: UpdateProfileDto) {
+  async updateProfile(userId: string, dto: UpdateProfileRequestDto): Promise<UserResponseDto> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
     });
@@ -44,7 +45,7 @@ export class UsersService {
     return result;
   }
 
-  async changePassword(userId: string, dto: ChangePasswordDto) {
+  async changePassword(userId: string, dto: ChangePasswordRequestDto): Promise<UserResponseDto> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
     });
@@ -76,7 +77,7 @@ export class UsersService {
     return result;
   }
 
-  async findAll(paginationDto: PaginationDto): Promise<PaginatedResult<User>> {
+  async findAll(paginationDto: PaginationDto): Promise<PaginatedResult<UserResponseDto>> {
     const page = paginationDto.page ?? 1;
     const limit = paginationDto.limit ?? 10;
     const [data, total] = await this.userRepository.findAndCount({
@@ -87,6 +88,7 @@ export class UsersService {
         'phone',
         'role',
         'createdAt',
+        'updatedAt',
       ],
       skip: (page - 1) * limit,
       take: limit,

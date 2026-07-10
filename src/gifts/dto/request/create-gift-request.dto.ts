@@ -1,6 +1,6 @@
 import { IsString, IsInt, Min, IsOptional, IsBoolean } from 'class-validator';
 
-export class CreateGiftDto {
+export class CreateGiftRequestDto {
   @IsString()
   name: string;
 

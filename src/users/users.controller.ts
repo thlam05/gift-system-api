@@ -1,12 +1,13 @@
 import { Controller, Get, Patch, Body, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UsersService } from './users.service';
-import { UpdateProfileDto } from './dto/update-profile.dto';
+import { UpdateProfileRequestDto } from './dto/request/update-profile-request.dto';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { Roles } from '../common/decorators/roles.decorator';
 import { PaginationDto } from '../common/dto/pagination.dto';
-import { ChangePasswordDto } from './dto/change-password.dto';
+import { ChangePasswordRequestDto } from './dto/request/change-password-request.dto';
 import { UserRole } from '../auth/entities/user.entity';
+import { RolesGuard } from '../common/guards/roles.guard';
 
 @Controller('users')
 export class UsersController {
@@ -22,7 +23,7 @@ export class UsersController {
   @Patch('profile')
   updateProfile(
     @CurrentUser('id') userId: string,
-    @Body() dto: UpdateProfileDto,
+    @Body() dto: UpdateProfileRequestDto,
   ) {
     return this.usersService.updateProfile(userId, dto);
   }
@@ -31,12 +32,12 @@ export class UsersController {
   @Patch('password')
   changePassword(
     @CurrentUser('id') userId: string,
-    @Body() dto: ChangePasswordDto,
+    @Body() dto: ChangePasswordRequestDto,
   ) {
     return this.usersService.changePassword(userId, dto);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles(UserRole.ADMIN)
   @Get()
   findAll(@Query() paginationDto: PaginationDto) {

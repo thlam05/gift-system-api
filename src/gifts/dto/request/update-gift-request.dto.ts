@@ -1,6 +1,6 @@
 import { IsOptional, IsString, IsInt, Min, IsBoolean } from 'class-validator';
 
-export class UpdateGiftDto {
+export class UpdateGiftRequestDto {
   @IsOptional()
   @IsString()
   name?: string;
