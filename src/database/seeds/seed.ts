@@ -42,7 +42,7 @@ async function seed() {
   logger.log('Seed completed!');
 }
 
-seed().catch((err) => {
+seed().catch((err: unknown) => {
   logger.error(err);
   process.exit(1);
 });

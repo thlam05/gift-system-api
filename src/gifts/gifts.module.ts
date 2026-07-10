@@ -10,4 +10,5 @@ import { CommonModule } from '../common/common.module';
   controllers: [GiftsController],
   providers: [GiftsService],
 })
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class GiftsModule {}

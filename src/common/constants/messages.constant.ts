@@ -19,3 +19,8 @@ export const USER_MESSAGES = {
 export const GIFT_MESSAGES = {
   GIFT_NOT_FOUND: 'Gift not found',
 } as const;
+
+export const CONFIG_MESSAGES = {
+  JWT_SECRET_NOT_CONFIGURED: 'JWT secret is not configured',
+  JWT_EXPIRES_IN_NOT_CONFIGURED: 'JWT expiresIn is not configured',
+} as const;

@@ -1,10 +1,10 @@
-export class SuccessResponse<T> {
-  data: T;
+export class SuccessResponse {
+  data: unknown;
   message: string;
 }
 
-export class PaginatedResponse<T> {
-  data: T[];
+export class PaginatedResponse {
+  data: unknown[];
   meta: {
     page: number;
     limit: number;

@@ -32,4 +32,5 @@ import { GiftsModule } from './gifts/gifts.module';
     GiftsModule,
   ],
 })
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class AppModule {}

@@ -10,4 +10,5 @@ import { CommonModule } from '../common/common.module';
   controllers: [UsersController],
   providers: [UsersService],
 })
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class UsersModule {}
