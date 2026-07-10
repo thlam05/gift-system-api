@@ -37,6 +37,7 @@ export default defineConfig([
         "error",
         { checksVoidReturn: false } 
       ],
+
       "no-restricted-syntax": [
         "error",
         {
@@ -48,6 +49,8 @@ export default defineConfig([
           message: "Không được throw trực tiếp một chuỗi literal. Hãy throw một đối tượng Error kèm hằng số (constant).",
         }
       ],
+
+      "@typescript-eslint/no-useless-constructor": "error",
 
       "@typescript-eslint/array-type": ["error", { default: "array" }],
       "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
