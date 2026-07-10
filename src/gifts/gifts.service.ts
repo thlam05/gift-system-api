@@ -78,10 +78,9 @@ export class GiftsService {
     return this.toResponseDto(savedGift);
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<void> {
     const gift = await this.getGiftEntityOrThrow(id);
     await this.giftRepository.remove(gift);
-    return null;
   }
 
   private async getGiftEntityOrThrow(id: string): Promise<Gift> {

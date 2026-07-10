@@ -19,16 +19,14 @@ export class UsersService {
     private userRepository: Repository<User>,
   ) { }
 
-  async getProfile(userId: string) {
+  async getProfile(userId: string): Promise<UserResponseDto> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
     });
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _password, ...result } = user;
-    return result;
+    return this.toResponseDto(user);
   }
 
   async updateProfile(userId: string, dto: UpdateProfileRequestDto): Promise<UserResponseDto> {
@@ -40,9 +38,7 @@ export class UsersService {
     }
     Object.assign(user, dto);
     await this.userRepository.save(user);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _password, ...result } = user;
-    return result;
+    return this.toResponseDto(user);
   }
 
   async changePassword(userId: string, dto: ChangePasswordRequestDto): Promise<UserResponseDto> {
@@ -71,10 +67,7 @@ export class UsersService {
 
     user.password = await bcrypt.hash(dto.newPassword, 10);
     await this.userRepository.save(user);
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _password, ...result } = user;
-    return result;
+    return this.toResponseDto(user);
   }
 
   async findAll(paginationDto: PaginationDto): Promise<PaginatedResult<UserResponseDto>> {
@@ -95,8 +88,20 @@ export class UsersService {
     });
 
     return {
-      data,
+      data: data.map(user => this.toResponseDto(user)),
       meta: { page, limit, total, totalPages: Math.ceil(total / limit) },
+    };
+  }
+
+  private toResponseDto(user: User): UserResponseDto {
+    return {
+      id: user.id,
+      email: user.email,
+      fullName: user.fullName,
+      phone: user.phone,
+      role: user.role,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
     };
   }
 }
