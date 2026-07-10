@@ -3,10 +3,10 @@ import { AuthGuard } from '@nestjs/passport';
 import { UsersService } from './users.service';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
-import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 import { PaginationDto } from '../common/dto/pagination.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { UserRole } from '../auth/entities/user.entity';
 
 @Controller('users')
 export class UsersController {
@@ -36,8 +36,8 @@ export class UsersController {
     return this.usersService.changePassword(userId, dto);
   }
 
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles('admin')
+  @UseGuards(AuthGuard('jwt'))
+  @Roles(UserRole.ADMIN)
   @Get()
   findAll(@Query() paginationDto: PaginationDto) {
     return this.usersService.findAll(paginationDto);

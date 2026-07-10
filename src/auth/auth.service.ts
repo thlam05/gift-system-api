@@ -12,6 +12,7 @@ import * as bcrypt from 'bcrypt';
 import { User, UserRole } from './entities/user.entity';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { AUTH_MESSAGES } from '../common/constants/messages.constant';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +27,7 @@ export class AuthService {
       where: { email: dto.email },
     });
     if (existing) {
-      throw new ConflictException('Email already exists');
+      throw new ConflictException(AUTH_MESSAGES.EMAIL_EXISTS);
     }
 
     const hashedPassword = await bcrypt.hash(dto.password, 10);
@@ -46,12 +47,12 @@ export class AuthService {
       where: { email: dto.email },
     });
     if (!user) {
-      throw new BadRequestException('Invalid credentials');
+      throw new BadRequestException(AUTH_MESSAGES.INVALID_CREDENTIALS);
     }
 
     const isPasswordValid = await bcrypt.compare(dto.password, user.password);
     if (!isPasswordValid) {
-      throw new BadRequestException('Invalid credentials');
+      throw new BadRequestException(AUTH_MESSAGES.INVALID_CREDENTIALS);
     }
 
     return this.generateToken(user);
@@ -62,16 +63,16 @@ export class AuthService {
       where: { email: dto.email },
     });
     if (!user) {
-      throw new BadRequestException('Invalid admin credentials');
+      throw new BadRequestException(AUTH_MESSAGES.INVALID_ADMIN_CREDENTIALS);
     }
 
     const isPasswordValid = await bcrypt.compare(dto.password, user.password);
     if (!isPasswordValid) {
-      throw new BadRequestException('Invalid admin credentials');
+      throw new BadRequestException(AUTH_MESSAGES.INVALID_ADMIN_CREDENTIALS);
     }
 
     if (user.role !== UserRole.ADMIN) {
-      throw new ForbiddenException("Access denied. Admin only.")
+      throw new ForbiddenException(AUTH_MESSAGES.ADMIN_ONLY)
     }
 
     return this.generateToken(user);

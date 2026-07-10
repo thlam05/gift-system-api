@@ -5,6 +5,8 @@ import { dataSourceOptions } from './config/database.config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { GiftsModule } from './gifts/gifts.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './common/guards/roles.guard';
 
 @Module({
   imports: [
@@ -14,5 +16,12 @@ import { GiftsModule } from './gifts/gifts.module';
     UsersModule,
     GiftsModule,
   ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    }
+  ]
 })
-export class AppModule {}
+
+export class AppModule { }

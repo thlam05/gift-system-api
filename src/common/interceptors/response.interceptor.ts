@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { RESPONSE_MESSAGES } from '../constants/messages.constant';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
@@ -16,13 +17,13 @@ export class ResponseInterceptor implements NestInterceptor {
           return {
             data: data.data,
             meta: data.meta,
-            message: 'Success',
+            message: RESPONSE_MESSAGES.SUCCESS,
           };
         }
 
         return {
           data: data ?? null,
-          message: 'Success',
+          message: RESPONSE_MESSAGES.SUCCESS,
         };
       }),
     );
