@@ -5,6 +5,7 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { ErrorResponse } from '../dto/api-response.dto';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -20,10 +21,12 @@ export class HttpExceptionFilter implements ExceptionFilter {
         : (exceptionResponse as Record<string, any>).message ||
           exception.message;
 
-    response.status(status).json({
+    const body: ErrorResponse = {
       data: null,
       message,
       statusCode: status,
-    });
+    };
+
+    response.status(status).json(body);
   }
 }

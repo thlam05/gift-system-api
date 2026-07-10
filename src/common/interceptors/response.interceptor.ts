@@ -7,6 +7,7 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { RESPONSE_MESSAGES } from '../constants/messages.constant';
+import { SuccessResponse, PaginatedResponse } from '../dto/api-response.dto';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
@@ -14,17 +15,19 @@ export class ResponseInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map(data => {
         if (data && typeof data === 'object' && 'data' in data && 'meta' in data) {
-          return {
+          const res: PaginatedResponse<any> = {
             data: data.data,
             meta: data.meta,
             message: RESPONSE_MESSAGES.SUCCESS,
           };
+          return res;
         }
 
-        return {
+        const res: SuccessResponse<any> = {
           data: data ?? null,
           message: RESPONSE_MESSAGES.SUCCESS,
         };
+        return res;
       }),
     );
   }
