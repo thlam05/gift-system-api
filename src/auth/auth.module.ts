@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { HttpException, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
@@ -20,7 +20,10 @@ import { CONFIG_MESSAGES } from '../common/constants/messages.constant';
         secret: (() => {
           const secret = configService.get<string>('jwt.secret');
           if (!secret) {
-            throw new Error(CONFIG_MESSAGES.JWT_SECRET_NOT_CONFIGURED);
+            throw new HttpException(
+              CONFIG_MESSAGES.JWT_SECRET_NOT_CONFIGURED,
+              500,
+            );
           }
           return secret;
         })(),
@@ -28,7 +31,10 @@ import { CONFIG_MESSAGES } from '../common/constants/messages.constant';
           expiresIn: (() => {
             const expiresIn = configService.get<string>('jwt.expiresIn');
             if (!expiresIn) {
-              throw new Error(CONFIG_MESSAGES.JWT_EXPIRES_IN_NOT_CONFIGURED);
+              throw new HttpException(
+                CONFIG_MESSAGES.JWT_EXPIRES_IN_NOT_CONFIGURED,
+                500,
+              );
             }
             return expiresIn;
           })(),

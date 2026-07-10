@@ -5,7 +5,7 @@ import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended"
 
 export default defineConfig([
   { 
-    ignores: ["dist", "node_modules", "eslint.config.mjs", "coverage", "build"] 
+    ignores: ["dist", "node_modules", "eslint.config.mjs", "coverage", "build", "**/*.test.ts", "**/*.spec.ts", "**/__tests__/**"] 
   },
   {
     files: ["**/*.ts", "**/*.tsx"],
@@ -47,6 +47,22 @@ export default defineConfig([
         {
           selector: "ThrowStatement > Literal",
           message: "Không được throw trực tiếp một chuỗi literal. Hãy throw một đối tượng Error kèm hằng số (constant).",
+        },
+        {
+          selector: "ThrowStatement > NewExpression[callee.name='Error']",
+          message: "Không được throw đối tượng 'Error' gốc. Hãy sử dụng các HttpException của NestJS (ví dụ: BadRequestException, NotFoundException, ConflictException).",
+        },
+      ],
+
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              regex: "^src(/.*)?$",
+              message: "Không được import trực tiếp từ thư mục 'src/...'. Hãy sử dụng relative path (./, ../) hoặc cấu hình Path Alias (ví dụ: @/...) trong tsconfig."
+            }
+          ]
         }
       ],
 
